@@ -7,3 +7,37 @@
 .bandera {
     width: 200px;
 }
+
+
+.game-container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.divIzq, .divDer {
+    position: absolute;
+    overflow: hidden;
+    width: 50vw;
+    height: 100vh;
+    text-align: center;
+    background-size: cover;
+    background-position: 50%;
+}
+
+
+.divIzq::before, .divDer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); 
+    z-index: 1;
+}
+
+.divDer {
+    right: 0;
+}
+
