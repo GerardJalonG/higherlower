@@ -28,17 +28,44 @@ async function printData() {
   const dataDer = await getData(urlDer);
   const banderaDer = dataDer[0].flags.svg;
   const nombreDer = dataDer[0].name.common;
+  const poblacionDer = dataDer[0].population.toLocaleString("es-ES");
 
 
   result.innerHTML = `
     <div class="divIzq" style="background-image: url(${banderaIzq});">
-      <div class="nombre">${nombreIzq}</div>
-      <div class="poblacion">${poblacionIzq} habitantes</div>
+      <div> 
+        <div class="nombre">${nombreIzq}</div>
+        <div class="poblacion">${poblacionIzq} habitantes</div>
+      </div>
     </div>
     <div class="divDer" style="background-image: url(${banderaDer});">
-      <div class="nombre">${nombreDer}</div>
+      <div> 
+        <div class="nombre">${nombreDer}</div>
+        <button class="btn" id="btnIzq">Menos</button>
+        <button class="btn" id="btnDer">Más</button>
+      </div>
     </div>
   `;
+  console.log("Población Izquierda: ", poblacionIzq);
+  console.log("Población Derecha: ", poblacionDer);
+    
+  document.getElementById("btnIzq").addEventListener("click", () => {
+    console.log("Botón Izquierdo presionado");
+    if (poblacionIzq > poblacionDer) {
+      console.log("Correcto!");
+    } else {
+      console.log("Incorrecto!");
+    }
+  });
+
+  document.getElementById("btnDer").addEventListener("click", () => {
+    console.log("Botón Derecho presionado");
+    if (poblacionIzq < poblacionDer) {
+      console.log("Correcto!");
+    } else {
+      console.log("Incorrecto!");
+    }
+  });
 }
 
 printData();
