@@ -22,20 +22,21 @@ async function printData() {
   const dataIzq = await getData(urlIzq);
   const banderaIzq = dataIzq[0].flags.svg;
   const nombreIzq = dataIzq[0].name.common;
-  const poblacionIzq = dataIzq[0].population.toLocaleString("es-ES");
+  const poblacionIzq = dataIzq[0].population;
+  const poblacionIzqS = dataIzq[0].population.toLocaleString("es-ES") ;
 
   const urlDer = `https://restcountries.com/v3.1/name/${paisder}`;
   const dataDer = await getData(urlDer);
   const banderaDer = dataDer[0].flags.svg;
   const nombreDer = dataDer[0].name.common;
-  const poblacionDer = dataDer[0].population.toLocaleString("es-ES");
+  const poblacionDer = dataDer[0].population;
 
 
   result.innerHTML = `
     <div class="divIzq" style="background-image: url(${banderaIzq});">
       <div> 
         <div class="nombre">${nombreIzq}</div>
-        <div class="poblacion">${poblacionIzq} habitantes</div>
+        <div class="poblacion">${poblacionIzqS} habitantes</div>
       </div>
     </div>
     <div class="divDer" style="background-image: url(${banderaDer});">
@@ -51,19 +52,21 @@ async function printData() {
     
   document.getElementById("btnIzq").addEventListener("click", () => {
     console.log("Botón Izquierdo presionado");
-    if (poblacionIzq > poblacionDer) {
-      console.log("Correcto!");
+    const divDer = document.querySelector(".divDer");
+    if (poblacionDer < poblacionIzq) {
+      divDer.style.border = "10px solid green"; 
     } else {
-      console.log("Incorrecto!");
-    }
+    divDer.style.border = "10px solid red";
+  }
   });
 
   document.getElementById("btnDer").addEventListener("click", () => {
     console.log("Botón Derecho presionado");
-    if (poblacionIzq < poblacionDer) {
-      console.log("Correcto!");
+    const divDer = document.querySelector(".divDer");
+    if (poblacionDer > poblacionIzq) {
+      divDer.style.border = "10px solid green"; 
     } else {
-      console.log("Incorrecto!");
+      divDer.style.border = "10px solid red"; 
     }
   });
 }
