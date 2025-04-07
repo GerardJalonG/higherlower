@@ -10,7 +10,6 @@ if (randomNumber === random2) {
 const paiszizq = countries[randomNumber];
 const paisder = countries[random2];
 
-
 async function getData(url) {
   const response = await fetch(url);
   const data = await response.json();
@@ -23,14 +22,14 @@ async function printData() {
   const banderaIzq = dataIzq[0].flags.svg;
   const nombreIzq = dataIzq[0].name.common;
   const poblacionIzq = dataIzq[0].population;
-  const poblacionIzqS = dataIzq[0].population.toLocaleString("es-ES") ;
+  const poblacionIzqS = dataIzq[0].population.toLocaleString("es-ES");
 
   const urlDer = `https://restcountries.com/v3.1/name/${paisder}`;
   const dataDer = await getData(urlDer);
   const banderaDer = dataDer[0].flags.svg;
   const nombreDer = dataDer[0].name.common;
   const poblacionDer = dataDer[0].population;
-
+  const poblacionDerS = dataDer[0].population.toLocaleString("es-ES");
 
   result.innerHTML = `
     <div class="divIzq" style="background-image: url(${banderaIzq});">
@@ -49,24 +48,34 @@ async function printData() {
   `;
   console.log("Población Izquierda: ", poblacionIzq);
   console.log("Población Derecha: ", poblacionDer);
-    
+
   document.getElementById("btnIzq").addEventListener("click", () => {
     console.log("Botón Izquierdo presionado");
     const divDer = document.querySelector(".divDer");
-    if (poblacionDer < poblacionIzq) {
-      divDer.style.border = "10px solid green"; 
+    if (poblacionDer <= poblacionIzq) {
+      divDer.style.border = "10px solid green";
+      divDer.innerHTML = `
+      <div> 
+        <div class="nombre">${nombreDer}</div>
+        <div class="poblacion">${poblacionDerS} habitantes</div>
+      </div>`;
     } else {
-    divDer.style.border = "10px solid red";
-  }
+      divDer.style.border = "10px solid red";
+    }
   });
 
   document.getElementById("btnDer").addEventListener("click", () => {
     console.log("Botón Derecho presionado");
     const divDer = document.querySelector(".divDer");
     if (poblacionDer > poblacionIzq) {
-      divDer.style.border = "10px solid green"; 
+      divDer.style.border = "10px solid green";
+      divDer.innerHTML = `
+      <div> 
+        <div class="nombre">${nombreDer}</div>
+        <div class="poblacion">${poblacionDerS} habitantes</div>
+      </div>`;
     } else {
-      divDer.style.border = "10px solid red"; 
+      divDer.style.border = "10px solid red";
     }
   });
 }
