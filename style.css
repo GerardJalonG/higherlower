@@ -7,22 +7,42 @@
     font-family: 'Boldonse', sans-serif;
 }
 
+
 .bandera {
     width: 200px;
 }
 
 
+.score-bar {
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.056);
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.5rem 2rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-sizing: border-box;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+}
+
 .game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .divIzq, .divDer {
     position: absolute;
+    top: 2rem; /* deja espacio para el marcador */
     overflow: hidden;
     width: 50vw;
-    height: 100vh;
+    height: calc(100vh - 2rem);
     text-align: center;
     background-size: cover;
     background-position: 50%;
@@ -58,6 +78,10 @@
 
 .poblacion {
     font-size: 1.5rem;
+}
+
+.divIzq {
+    left: 0;
 }
 
 .divDer {

@@ -2,6 +2,8 @@ import { countries } from "./countries.js";
 
 let leftCountryIndex = Math.floor(Math.random() * countries.length);
 let rightCountryIndex = getRandomIndexExcept(leftCountryIndex);
+let score = 0;
+let highscore = 0;
 
 function getRandomIndexExcept(exceptIndex) {
   let idx;
@@ -33,6 +35,9 @@ async function renderGame(leftIdx, rightIdx) {
   const poblacionDerS = rightData.population.toLocaleString("es-ES");
 
   result.innerHTML = `
+    <div class="score-bar">
+      Puntuación: <b>${score}</b> | Récord: <b>${highscore}</b>
+    </div>
     <div class="divIzq" style="background-image: url(${banderaIzq});">
       <div> 
         <div class="nombre">${nombreIzq}</div>
@@ -63,17 +68,17 @@ async function handleGuess(isRightBtn, leftIdx, rightIdx) {
     correct = rightData.population <= leftData.population;
   }
   if (correct) {
+    score++;
+    if (score > highscore) highscore = score;
     divDer.style.border = "10px solid green";
-    divDer.style.transition = "border 0.5s, opacity 0.5s";
+    divDer.style.transition = "border 0.5s, opacity 0.75s";
     divDer.style.opacity = "1";
     setTimeout(() => {
-      divDer.style.opacity = "0.3";
+      divDer.style.opacity = "0.5";
       setTimeout(async () => {
         divDer.style.border = "none";
         divDer.style.opacity = "1";
-        // El país ganador se queda, el otro cambia
         if (isRightBtn) {
-          // El derecho gana, izquierdo cambia
           leftCountryIndex = rightCountryIndex;
         }
         rightCountryIndex = getRandomIndexExcept(leftCountryIndex);
@@ -81,14 +86,18 @@ async function handleGuess(isRightBtn, leftIdx, rightIdx) {
       }, 500);
     }, 500);
   } else {
+    score = 0;
     divDer.style.border = "10px solid red";
-    divDer.style.transition = "border 0.5s, opacity 0.5s";
+    divDer.style.transition = "border 0.5s, opacity 0.75s";
     divDer.style.opacity = "1";
     setTimeout(() => {
-      divDer.style.opacity = "0.3";
-      setTimeout(() => {
+      divDer.style.opacity = "0.5";
+      setTimeout(async () => {
         divDer.style.border = "none";
         divDer.style.opacity = "1";
+        leftCountryIndex = Math.floor(Math.random() * countries.length);
+        rightCountryIndex = getRandomIndexExcept(leftCountryIndex);
+        await renderGame(leftCountryIndex, rightCountryIndex);
       }, 500);
     }, 500);
   }
