@@ -43,7 +43,7 @@ async function renderGame(leftIdx, rightIdx, showFailInfo = false, failInfo = {}
 
   result.innerHTML = `
     <div class="score-bar">
-      Puntuación: <b>${score}</b> | Récord: <b>${highscore}</b>
+      Score: <b>${score}</b> | Highscore: <b>${highscore}</b>
     </div>
     ${failHtml}
     <div class="divIzq" style="background-image: url(${banderaIzq});">
