@@ -54,6 +54,15 @@ async function printData() {
     const divDer = document.querySelector(".divDer");
     if (poblacionDer <= poblacionIzq) {
       divDer.style.border = "10px solid green";
+      divDer.style.transition = "border 0.5s, opacity 0.5s";
+      divDer.style.opacity = "1";
+      setTimeout(() => {
+        divDer.style.opacity = "0.3";
+        setTimeout(() => {
+          divDer.style.border = "none";
+          divDer.style.opacity = "1";
+        }, 500);
+      }, 500);
       divDer.innerHTML = `
       <div> 
         <div class="nombre">${nombreDer}</div>
@@ -61,6 +70,15 @@ async function printData() {
       </div>`;
     } else {
       divDer.style.border = "10px solid red";
+      divDer.style.transition = "border 0.5s, opacity 0.5s";
+      divDer.style.opacity = "1";
+      setTimeout(() => {
+        divDer.style.opacity = "0.3";
+        setTimeout(() => {
+          divDer.style.border = "none";
+          divDer.style.opacity = "1";
+        }, 500);
+      }, 500);
     }
   });
 
@@ -69,6 +87,15 @@ async function printData() {
     const divDer = document.querySelector(".divDer");
     if (poblacionDer > poblacionIzq) {
       divDer.style.border = "10px solid green";
+      divDer.style.transition = "border 0.5s, opacity 0.5s";
+      divDer.style.opacity = "1";
+      setTimeout(() => {
+        divDer.style.opacity = "0.3";
+        setTimeout(() => {
+          divDer.style.border = "none";
+          divDer.style.opacity = "1";
+        }, 500);
+      }, 500);
       divDer.innerHTML = `
       <div> 
         <div class="nombre">${nombreDer}</div>
@@ -76,6 +103,15 @@ async function printData() {
       </div>`;
     } else {
       divDer.style.border = "10px solid red";
+      divDer.style.transition = "border 0.5s, opacity 0.5s";
+      divDer.style.opacity = "1";
+      setTimeout(() => {
+        divDer.style.opacity = "0.3";
+        setTimeout(() => {
+          divDer.style.border = "none";
+          divDer.style.opacity = "1";
+        }, 500);
+      }, 500);
     }
   });
 }
