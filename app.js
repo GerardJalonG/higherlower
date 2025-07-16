@@ -1,35 +1,36 @@
 import { countries } from "./countries.js";
 
-const randomNumber = Math.floor(Math.random() * 191) + 1;
-const random2 = Math.floor(Math.random() * 191) + 1;
+let leftCountryIndex = Math.floor(Math.random() * countries.length);
+let rightCountryIndex = getRandomIndexExcept(leftCountryIndex);
 
-if (randomNumber === random2) {
-  random2 = (randomNumber + 1) % 191;
+function getRandomIndexExcept(exceptIndex) {
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * countries.length);
+  } while (idx === exceptIndex);
+  return idx;
 }
 
-const paiszizq = countries[randomNumber];
-const paisder = countries[random2];
-
-async function getData(url) {
+async function getCountryData(countryName) {
+  const url = `https://restcountries.com/v3.1/name/${countryName}`;
   const response = await fetch(url);
   const data = await response.json();
-  return data;
+  return data[0];
 }
 
-async function printData() {
-  const urlIzq = `https://restcountries.com/v3.1/name/${paiszizq}`;
-  const dataIzq = await getData(urlIzq);
-  const banderaIzq = dataIzq[0].flags.svg;
-  const nombreIzq = dataIzq[0].name.common;
-  const poblacionIzq = dataIzq[0].population;
-  const poblacionIzqS = dataIzq[0].population.toLocaleString("es-ES");
+async function renderGame(leftIdx, rightIdx) {
+  const leftData = await getCountryData(countries[leftIdx]);
+  const rightData = await getCountryData(countries[rightIdx]);
 
-  const urlDer = `https://restcountries.com/v3.1/name/${paisder}`;
-  const dataDer = await getData(urlDer);
-  const banderaDer = dataDer[0].flags.svg;
-  const nombreDer = dataDer[0].name.common;
-  const poblacionDer = dataDer[0].population;
-  const poblacionDerS = dataDer[0].population.toLocaleString("es-ES");
+  const banderaIzq = leftData.flags.svg;
+  const nombreIzq = leftData.name.common;
+  const poblacionIzq = leftData.population;
+  const poblacionIzqS = leftData.population.toLocaleString("es-ES");
+
+  const banderaDer = rightData.flags.svg;
+  const nombreDer = rightData.name.common;
+  const poblacionDer = rightData.population;
+  const poblacionDerS = rightData.population.toLocaleString("es-ES");
 
   result.innerHTML = `
     <div class="divIzq" style="background-image: url(${banderaIzq});">
@@ -46,74 +47,51 @@ async function printData() {
       </div>
     </div>
   `;
-  console.log("Población Izquierda: ", poblacionIzq);
-  console.log("Población Derecha: ", poblacionDer);
 
-  document.getElementById("btnIzq").addEventListener("click", () => {
-    console.log("Botón Izquierdo presionado");
-    const divDer = document.querySelector(".divDer");
-    if (poblacionDer <= poblacionIzq) {
-      divDer.style.border = "10px solid green";
-      divDer.style.transition = "border 0.5s, opacity 0.5s";
-      divDer.style.opacity = "1";
-      setTimeout(() => {
-        divDer.style.opacity = "0.3";
-        setTimeout(() => {
-          divDer.style.border = "none";
-          divDer.style.opacity = "1";
-        }, 500);
-      }, 500);
-      divDer.innerHTML = `
-      <div> 
-        <div class="nombre">${nombreDer}</div>
-        <div class="poblacion">${poblacionDerS} habitantes</div>
-      </div>`;
-    } else {
-      divDer.style.border = "10px solid red";
-      divDer.style.transition = "border 0.5s, opacity 0.5s";
-      divDer.style.opacity = "1";
-      setTimeout(() => {
-        divDer.style.opacity = "0.3";
-        setTimeout(() => {
-          divDer.style.border = "none";
-          divDer.style.opacity = "1";
-        }, 500);
-      }, 500);
-    }
-  });
-
-  document.getElementById("btnDer").addEventListener("click", () => {
-    console.log("Botón Derecho presionado");
-    const divDer = document.querySelector(".divDer");
-    if (poblacionDer > poblacionIzq) {
-      divDer.style.border = "10px solid green";
-      divDer.style.transition = "border 0.5s, opacity 0.5s";
-      divDer.style.opacity = "1";
-      setTimeout(() => {
-        divDer.style.opacity = "0.3";
-        setTimeout(() => {
-          divDer.style.border = "none";
-          divDer.style.opacity = "1";
-        }, 500);
-      }, 500);
-      divDer.innerHTML = `
-      <div> 
-        <div class="nombre">${nombreDer}</div>
-        <div class="poblacion">${poblacionDerS} habitantes</div>
-      </div>`;
-    } else {
-      divDer.style.border = "10px solid red";
-      divDer.style.transition = "border 0.5s, opacity 0.5s";
-      divDer.style.opacity = "1";
-      setTimeout(() => {
-        divDer.style.opacity = "0.3";
-        setTimeout(() => {
-          divDer.style.border = "none";
-          divDer.style.opacity = "1";
-        }, 500);
-      }, 500);
-    }
-  });
+  document.getElementById("btnIzq").addEventListener("click", () => handleGuess(false, leftIdx, rightIdx));
+  document.getElementById("btnDer").addEventListener("click", () => handleGuess(true, leftIdx, rightIdx));
 }
 
-printData();
+async function handleGuess(isRightBtn, leftIdx, rightIdx) {
+  const leftData = await getCountryData(countries[leftIdx]);
+  const rightData = await getCountryData(countries[rightIdx]);
+  const divDer = document.querySelector(".divDer");
+  let correct;
+  if (isRightBtn) {
+    correct = rightData.population > leftData.population;
+  } else {
+    correct = rightData.population <= leftData.population;
+  }
+  if (correct) {
+    divDer.style.border = "10px solid green";
+    divDer.style.transition = "border 0.5s, opacity 0.5s";
+    divDer.style.opacity = "1";
+    setTimeout(() => {
+      divDer.style.opacity = "0.3";
+      setTimeout(async () => {
+        divDer.style.border = "none";
+        divDer.style.opacity = "1";
+        // El país ganador se queda, el otro cambia
+        if (isRightBtn) {
+          // El derecho gana, izquierdo cambia
+          leftCountryIndex = rightCountryIndex;
+        }
+        rightCountryIndex = getRandomIndexExcept(leftCountryIndex);
+        await renderGame(leftCountryIndex, rightCountryIndex);
+      }, 500);
+    }, 500);
+  } else {
+    divDer.style.border = "10px solid red";
+    divDer.style.transition = "border 0.5s, opacity 0.5s";
+    divDer.style.opacity = "1";
+    setTimeout(() => {
+      divDer.style.opacity = "0.3";
+      setTimeout(() => {
+        divDer.style.border = "none";
+        divDer.style.opacity = "1";
+      }, 500);
+    }, 500);
+  }
+}
+
+renderGame(leftCountryIndex, rightCountryIndex);
